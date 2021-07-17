@@ -9,7 +9,7 @@ export class AlmacenesService {
     ){}
 
     async findAll(): Promise<AlmacenesEntity[]>{
-        return this.repo.getAlll();
+        return this.repo.getAll();
     }
 
     async findById(id:string): Promise<AlmacenesEntity>{
@@ -27,4 +27,7 @@ export class AlmacenesService {
     async delete(id: string): Promise<void> {
         await this.repo.delete(id);
     }
+    async getAllpaginated(page:number, records:number): Promise<AlmacenesEntity[]>{
+        return this.repo.getAllpaginated(page,records);
+     }
 }

@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { DeleteResult, EntityRepository, Repository } from "typeorm";
+import { ConnectionOptionsReader, DeleteResult, EntityRepository, Repository } from "typeorm";
 import { AlmacenesEntity } from "./almacenes.entity";
 
 @EntityRepository(AlmacenesEntity)
@@ -8,8 +8,12 @@ export class AlmacenesRepository  {
         @InjectRepository
         (AlmacenesEntity) private repo: Repository<AlmacenesEntity>){}
 
-    async getAlll(): Promise<AlmacenesEntity[]>{
-       return this.repo.find();
+    async getAll(): Promise<AlmacenesEntity[]>{
+       return this.repo.find({
+           order:{
+               CodUbic:"ASC"
+           }
+        });
     }
 
     async getById(id : string): Promise<AlmacenesEntity>{
@@ -29,5 +33,17 @@ export class AlmacenesRepository  {
     async delete(id: string): Promise<DeleteResult> {
         return this.repo.delete(id);
     }
+
+    async getAllpaginated(page:number, records:number): Promise<AlmacenesEntity[]>{
+        const initpage = page -1; 
+        const offset = initpage * records;
+        return this.repo.find({
+            order:{
+                CodUbic:"ASC"
+            },
+            skip:offset,
+            take:records
+        });
+     }
 
 }

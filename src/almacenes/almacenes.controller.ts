@@ -31,4 +31,9 @@ export class AlmacenesController {
     async deleteUser(@Param('id') id: string): Promise<void> {
         return this.almacenesService.delete(id);
     }
+
+    @Get('/page/:page/records/:records')
+    async findAllPaginated(@Param('page') page:number,@Param('records') records : number): Promise<AlmacenesEntity[]>{
+        return this.almacenesService.getAllpaginated(page,records);
+    }
 }
